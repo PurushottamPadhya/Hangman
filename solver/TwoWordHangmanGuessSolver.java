@@ -102,12 +102,11 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
 
 	@Override
 	public void guessFeedback(char c, Boolean bGuess, ArrayList<ArrayList<Integer>> lPositions) {
-		//System.out.println("guess feedback  is " + lPositions + "   " + wordLengths[0] + "  " + wordLengths[1]);
+		
 		Set<String> temp = new HashSet<String>();
 		String str = Character.toString(c);// cast guessed character to string
 		// if it is right character find word the contain that character and store in
-		// set
-
+		// filter the word list if guess character is correct
 		if (bGuess) {
 			// old one
 			for (String s : sameWordLength) {
@@ -175,12 +174,17 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
 									//System.out.println("possible word is " + s);
 									// if old position is null then add word that does not contain that character
 									if (oldPosition == null) {
-										
+										/*
 										if(s.contains(Character.toString(alreadyGuessed))) {
 											
 										}
 										else {
 											newTemp.add(str);
+										}*/
+										
+										if(!s.contains(str)) {
+											
+											temp.add(s);
 										}
 									}
 									else {
@@ -220,7 +224,7 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
 							
 							int getWordSize = wordLengths[i];
 							// select the word with the original length of character without the current guessed character.
-							if(!s.contains(str)) {
+							if(!temp.contains(s)) {
 								
 								temp.add(s);
 							}
@@ -261,6 +265,7 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
 		// Implement me!
 	} // end of guessFeedback()
 
+    // method recompute the frequency of the character in the selected word list
 	private void RecalculateCharDistribution() {
 		Map<Character, Integer> temp = new HashMap<>();
 		for (String s : sameWordLength) {
